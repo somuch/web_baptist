@@ -1,0 +1,272 @@
+{% extends "mylist.html" %}
+{% load i18n %}
+
+{% block branding %}
+<h1 id="site-name">{% trans 'Settings' %}</h1>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="/admin/">Home</a>
+&rsaquo; <a href="/admin/baptist/">Baptist</a>
+&rsaquo; <a href="/admin/baptist/rate/">Rates</a>
+
+</div>
+{% endblock %}
+
+{% block content %}
+<style type="text/css">
+table {margin-left:40px}
+th {padding:6px 30px 2px 12px;min-width:120px}
+td {padding:6px 30px 2px 12px;min-width:120px}
+td .select1 {width:200px}
+td .select2 {width:128px}
+.highlight_text {color:#d65;}
+
+</style>
+
+
+<script src="/static/js/jquery-1.11.1.min.js"></script>
+<script src="/static/js/jquery.json-2.3.min.js"></script>
+<script src="/static/js/settings.js?aa"></script>
+
+<div id='is_adm' style="display: none;">{{is_adm}}</div>
+
+<div class="results">
+<fieldset>
+	<legend><font color="#088"><strong>Business Interruption:</strong></font></legend>
+	<table id="result_list">
+		<thead>
+		<br>
+		{% for rate in rates_bincomcop %}
+		<tr>
+			<th scope="col"><div class="text"><span>Company Premium Rate</span></div></th>	
+			<th scope="col"><div class="text"><span id="rate_bincompremium"  value="{{rate.rat_pk}}" name="click2edit" style="text-align:right">{{ rate.rat_factor }}</span></div></th>
+		</tr>
+		{% endfor %}
+		</thead>
+	</table>
+	<br><br>
+
+	<table id="result_list">
+		<thead>
+ 			<tr>
+ 				<th scope="col"><div class="text"><span style="text-align:center">Indemnity Period</span></div></th>
+   				<th scope="col"><div class="text"><span style="text-align:center">Months</span></div></th>
+   				<th scope="col"><div class="text"><span style="text-align:center">Discount</span></div></th>
+   			</tr>
+		</thead>
+		<tbody>
+			{% for rate in rates_binind %}
+    			<tr class="{% cycle 'row1' 'row2' %}" value="{{rate.rat_pk}}">
+    				<td>{{ forloop.counter }})</td>
+    				<td id="rate_month{{ forloop.counter }}" value="{{rate.rat_pk}}" name="click2edit" style="text-align:right">{{ rate.rat_amount | floatformat:"0" }}</td>
+    				<td id="rate_discount{{ forloop.counter }}" value="{{rate.rat_pk}}" name="click2edit" style="text-align:right">{{ rate.rat_factor | floatformat:"8" }}</td>
+    			</tr>	 
+			{% endfor %}
+		</tbody>
+	</table>
+	<br>
+</fieldset>
+<br><br>
+
+<fieldset>
+	<legend><font color="#088"><strong>Liability:</strong></font></legend>
+	<br>
+	<table id="result_list">
+		<thead>
+ 			<tr>
+ 				<th scope="col" colspan=2></th>
+   				<th scope="col"><div class="text"><span style="text-align:center">Trust</span></div></th>
+   				<th scope="col"><div class="text"><span style="text-align:center">Church</span></div></th>
+   			</tr>
+		</thead>
+		<tbody>
+			<tr class="row1" value="clauseA">
+				<td>Clause A</td>
+				<td>Associations</td>
+				<td><span id="rate_clauseA4trust" value="{{rate_liaTruClA.rat_pk}}" name="click2edit" style="float:right">{{rate_liaTruClA.money_format}}</span></td>
+				<td><span id="rate_clauseA4church" value="{{rate_liaChuClA.rat_pk}}" name="click2edit" style="float:right">{{rate_liaChuClA.money_format}}</span></td>
+			</tr>
+			<tr class="row2" value="clauseB">
+				<td>Clause B</td>
+				<td>Statutory</td>
+				<td><span id="rate_clauseB4trust" value="{{rate_liaTruClB.rat_pk}}" name="click2edit" style="float:right">{{rate_liaTruClB.money_format}}</span></td>
+				<td><span id="rate_clauseB4church" value="{{rate_liaChuClB.rat_pk}}" name="click2edit" style="float:right">{{rate_liaChuClB.money_format}}</span></td>
+			</tr>
+			<tr class="row1" value="clauseC">
+				<td>Clause C</td>
+				<td>Employers</td>
+				<td><span id="rate_clauseC4trust" value="{{rate_liaTruClC.rat_pk}}" name="click2edit" style="float:right">{{rate_liaTruClC.money_format}}</span></td>
+				<td><span id="rate_clauseC4church" value="{{rate_liaChuClC.rat_pk}}" name="click2edit" style="float:right">{{rate_liaChuClC.money_format}}</span></td>
+			</tr>
+			<tr class="row2" value="clauseD">
+				<td>Clause D</td>
+				<td>Sexual Abuse</td>
+				<td><span id="rate_clauseD4trust" value="{{rate_liaTruClD.rat_pk}}" name="click2edit" style="float:right">{{rate_liaTruClD.money_format}}</span></td>
+				<td><span id="rate_clauseD4church" value="{{rate_liaChuClD.rat_pk}}" name="click2edit" style="float:right">{{rate_liaChuClD.money_format}}</span></td>
+			</tr>
+			<tr class="row1" value="clauseE">
+				<td>Clause E</td>
+				<td>General</td>
+				<td><span id="rate_clauseE4trust" value="{{rate_liaTruClE.rat_pk}}" name="click2edit" style="float:right">{{rate_liaTruClE.money_format}}</span></td>
+				<td><span id="rate_clauseE4church" value="{{rate_liaChuClE.rat_pk}}" name="click2edit" style="float:right">{{rate_liaChuClE.money_format}}</span></td>
+			</tr>
+			<tr class="row2" value="clauseF">
+				<td>Clause F</td>
+				<td>Internet</td>
+				<td><span id="rate_clauseF4trust" value="{{rate_liaTruClF.rat_pk}}" name="click2edit" style="float:right">{{rate_liaTruClF.money_format}}</span></td>
+				<td><span id="rate_clauseF4church" value="{{rate_liaChuClF.rat_pk}}" name="click2edit" style="float:right">{{rate_liaChuClF.money_format}}</span></td>
+			</tr>
+			<tr class="row1" value="clauseG">
+				<td>Clause G</td>
+				<td>Crminial Defence</td>
+				<td><span id="rate_clauseG4trust" value="{{rate_liaTruClG.rat_pk}}" name="click2edit" style="float:right">{{rate_liaTruClG.money_format}}</span></td>
+				<td><span id="rate_clauseG4church" value="{{rate_liaChuClG.rat_pk}}" name="click2edit" style="float:right">{{rate_liaChuClG.money_format}}</span></td>
+			</tr>
+		</tbody>
+	</table>
+	<br>
+	<table id="result_list">
+		<tbody>
+			<tr class="row1" value="">
+				<td>Minimum Premium</td>
+				<td><span id="rate_money_liaMinPre" value="{{rate_schLiaMin.rat_pk}}" name="click2edit" style="float:right">{{rate_schLiaMin.money_format}}</span></td>
+			</tr>
+			<tr class="row2" value="">
+				<td>Liability Total</td>
+				<td><span id="rate_money_liaTot" value="{{rate_schLiaTot.rat_pk}}" name="click2edit" style="float:right">{{rate_schLiaTot.money_format}}</span></td>
+			</tr>
+			<tr class="row1" value="">
+				<td>Worshipper Threshhold</td>
+				<td><span id="rate_money_liaWorThr" value="{{rate_schWorThr.rat_pk}}" name="click2edit" style="float:right">{{rate_schWorThr.money_format}}</span></td>
+			</tr>
+		</tbody>
+	</table>
+	<br>
+</fieldset>
+<br><br>
+
+<fieldset>
+	<legend><font color="#088"><strong>Motor Vehicle:</strong></font></legend>
+	<br>
+	<table id="result_list">
+		<tbody>
+			<tr class="row1" value="mv_fcp">
+				<td>Full Cover Premium Rate</td>
+				<td><span id="rate_factor_mv_fcp" value="{{rate_mvFulCop.rat_pk}}" name="click2edit" style="float:right">{{rate_mvFulCop.rat_factor}}</span></td>
+			</tr>
+			<tr class="row2" value="mv_3pcop">
+				<td>Third Party Cover Premium Rate</td>
+				<td><span id="rate_factor_mv_3pcop" value="{{rate_mv3pCop.rat_pk}}" name="click2edit" style="float:right">{{rate_mv3pCop.rat_factor}}</span></td>
+			</tr>
+			<tr class="row1" value="mv_3pftcp">
+				<td>Third Party Fire & Theft Cover Premium Rate</td>
+				<td><span id="rate_factor_mv_3pftcp" value="{{rate_mv3pFtCop.rat_pk}}" name="click2edit" style="float:right">{{rate_mv3pFtCop.rat_factor}}</span></td>
+			</tr>
+			<tr class="row2" value="mv_fsl">
+				<td>Fire Service Levy</td>
+				<td><span id="rate_money_mv_fsl" value="{{rate_mvFSL.rat_pk}}" name="click2edit" style="float:right">{{rate_mvFSL.money_format}}</span></td>
+			</tr>
+		</tbody>
+	</table>
+	<br>
+</fieldset>
+<br><br>
+
+<fieldset>
+	<legend><font color="#088"><strong>Material Damage:</strong></font></legend>
+	<table id="result_list">
+		<tbody>
+			<tr class="row1" value="md_ccp">
+				<td>Commercial Company Premium</td>
+				<td><span id="rate_factor_md_ccp" value="{{rate_mdComCop.rat_pk}}" name="click2edit" style="float:right">{{rate_mdComCop.rat_factor}}</span></td>
+			</tr>
+			<tr class="row2" value="md_cci">
+				<td>Commercial Company Inflation</td>
+				<td><span id="rate_factor_md_cci" value="{{rate_mdComInf.rat_pk}}" name="click2edit" style="float:right">{{rate_mdComInf.rat_factor}}</span></td>
+			</tr>
+			<tr class="row1" value="md_cei">
+				<td>Commercial Earthquake Inflation</td>
+				<td><span id="rate_factor_md_cei" value="{{rate_mdComEQI.rat_pk}}" name="click2edit" style="float:right">{{rate_mdComEQI.rat_factor}}</span></td>
+			</tr>
+			<tr class="row2" value="md_cfsl">
+				<td>Commercial FSL Total</td>
+				<td><span id="rate_money_md_cfsl" value="{{rate_mdComFSL.rat_pk}}" name="click2edit" style="float:right">{{rate_mdComFSL.money_format}}</span></td>
+			</tr>
+		</tbody>
+	</table>
+	<br>
+	<table>
+		<tbody>
+			<tr class="row1" value="md_rcp">
+				<td>Residential Company Premium</td>
+				<td><span id="rate_factor_md_rcp" value="{{rate_mdResCop.rat_pk}}" name="click2edit" style="float:right">{{rate_mdResCop.rat_factor}}</span></td>
+			</tr>
+			<tr class="row2" value="md_req">
+				<td>Residential EQC Rate</td>
+				<td><span id="rate_factor_md_req" value="{{rate_mdResEQC.rat_pk}}" name="click2edit" style="float:right">{{rate_mdResEQC.rat_factor}}</span></td>
+			</tr>
+			<tr class="row1" value="md_reqt">
+				<td>Residential Earthquake Topup</td>
+				<td><span id="rate_factor_md_reqt" value="{{rate_mdResEQT.rat_pk}}" name="click2edit" style="float:right">{{rate_mdResEQT.rat_factor}}</span></td>
+			</tr>
+			<tr class="row2" value="md_rfsl">
+				<td>Residential FSL Rate</td>
+				<td><span id="rate_factor_md_rfsl" value="{{rate_mdResFSL.rat_pk}}" name="click2edit" style="float:right">{{rate_mdResFSL.rat_factor}}</span></td>
+			</tr>
+		</tbody>
+	</table>
+	<br>
+</fieldset>
+<br><br>
+
+<fieldset>
+	<legend><font color="#088"><strong>Earthquake Rates:</strong></font></legend>
+	<br>
+	<table id="result_list">
+		<thead>
+ 			<tr>
+ 				<th	></th>
+   				<th scope="col"><div class="text"><span>Earthquake Zone</span></div></th>
+   				<th scope="col"><div class="text"><span style="text-align:center">Rate</span></div></th>
+   			</tr>
+		</thead>
+		<tbody>
+			{% for rate in rates_eqzone %}
+    			<tr class="{% cycle 'row1' 'row2' %} ">
+    				<td style="display:none"></td>
+   					<td>{{ forloop.counter }})</td>
+    				<td id="rate_eqzonename{{ forloop.counter }}" value="{{rate.rat_pk}}" name="click2edit">{{ rate.rat_text }}</td>
+    				<td id="rate_eqzonerate{{ forloop.counter }}" value="{{rate.rat_pk}}" name="click2edit" style="text-align:right">{{ rate.rat_factor}}</td>
+    			</tr>	 
+			{% endfor %}
+		</tbody>
+	</table>
+	<br>
+</fieldset>
+<br><br>
+    
+<fieldset>
+    <legend><font color="#088"><strong>Other Rates</strong></font></legend>
+    	<table id="result_list">
+    		<thead>
+			<br>
+    		{% for rate in rate_goodsvc %}
+    			<tr>
+    				<th scope="col"><div class="text"><span>Goods and Services Tax</span></div></th>
+    				<th scope="col"><div class="text"><span id="rate_goodsvc" value="{{rate.rat_pk}}" name="click2edit" style="text-align:right">{{ rate.rat_factor }}</span></div></th>
+    			</tr>
+    		{% endfor %}
+    		</thead>
+   		</table>
+   		<br>
+</fieldset>
+
+</div>
+<br>	
+<div style="width:100%">
+<div style="float:right;">
+	<input type="button" value="Save" id="save"/>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Cancel" id="cancel"/>
+</div></div>
+{% endblock %}

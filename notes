@@ -1,0 +1,7 @@
+Django framwork modification:
+1,Lib\site-packages\django\contrib\admin\widgets.py
+	I commented these four lines to remove the "+" sign for church management (in fact this will apply to all the tales)
+            #output.append('<a href="%s" class="add-another" id="add_id_%s" onclick="return showAddAnotherPopup(this);"> '
+            #              % (related_url, name))
+            #output.append('<img src="%s" width="10" height="10" alt="%s"/></a>'
+            #              % (static('admin/img/icon_addlink.gif'), _('Add Another')))

@@ -1,0 +1,96 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+{% block title %}{{ title }} | {% trans 'Django site admin' %}{% endblock %}
+{% block branding %}
+<h1 id="site-name">{% trans 'Baptist Risk Manager Portal' %}</h1>
+{% endblock %}
+
+{% block content %}
+<style type="text/css">
+table {margin-left:40px}
+th {padding:16px 16px 2px 14px;height:16px;}
+td {padding:16px 16px 2px 2px}
+th span {float:right;}
+td span {float:right;}
+.highlight_text {color:#d65;}
+</style>
+
+<div>
+	<br>
+	<div>
+	<center>
+	<h1>Baptist Total Premium Summary &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</h1>
+	</center><br>
+	<table id="result_list">
+		<tbody>
+    		<tr class="row1">
+    			<th></th>
+    			<th><span>Sum Insured</span></th>
+    			<th><span>Company</span></th>
+    			<th><span>EQC</span></th>
+    			<th><span>CoyEq</span></th>
+    			<th><span>FSL</span></th>
+    			<th><span>Total</span></th>
+    		</tr>
+    		<tr class="row2">
+    			<th>Liability Trust</th>
+    			<td></td>
+    			<td><span>$99,485.00</span></td>
+    			<td><span></span></td>
+    			<td><span></span></td>
+    			<td><span></span></td>
+    			<td><span>$99,485.00</span></td>
+    		</tr>
+    		<tr class="row2">
+    			<th>Liability Church</th>
+    			<td><span></span></td>
+    			<td><span>$63,860.00</span></td>
+    			<td><span></span></td>
+    			<td><span></span></td>
+    			<td><span></span></td>
+    			<td><span>$63,860.00</span></td>
+    		</tr>
+    		<tr class="row2">
+    			<th>Motor Vehicle</th>
+    			<td><span>$3,014,887.00</span></td>
+    			<td><span>$77,247.12</span></td>
+    			<td><span></span></td>
+    			<td><span></span></td>
+    			<td><span>$1,556.48</span></td>
+    			<td><span>$78,803.60</span></td>
+    		</tr>
+    		<tr class="row2">
+    			<th>B. I.</th>
+    			<td><span>$58,022,816.00</span></td>
+    			<td><span>$40,546.34</span></td>
+    			<td><span></span></td>
+    			<td><span>$69,579.41</span></td>
+    			<td><span></span></td>
+    			<td><span>$110,125.75</span></td>
+    		</tr>
+    		<tr class="row2">
+    			<th>Material Damage</th>
+    			<td><span>$799,019,932.00</span></td>
+    			<td><span>$547,694.37</span></td>
+    			<td><span>$71,489.15</span></td>
+    			<td><span>$894,924.92</span></td>
+    			<td><span>$67,716.70</span></td>
+    			<td><span>$1,581,825.13</span></td>
+    		</tr>
+    		<tr class="row1">
+    			<th>Total</th>
+    			<th><span>$860,057,635.00</span></th>
+    			<th><span>$828,832.83</span></th>
+    			<th><span>$71,489.15</span></th>
+    			<th><span>$964,504.33</span></th>
+    			<th><span>$69,273.18</span></th>
+    			<th><span>$1,934,099.48</span></th>
+    		</tr>
+		</tbody>
+	</table>
+	</div>
+	<br>
+</div>
+
+
+{% endblock %}

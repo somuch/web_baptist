@@ -1,0 +1,289 @@
+{% extends "mylist.html" %}
+{% load i18n %}
+
+{% block branding %}
+<h1 id="site-name">{% trans 'Policy Management' %}</h1>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="/admin/">Home</a>
+&rsaquo; <a href="/admin/baptist/">Baptist</a>
+&rsaquo; <a href="/admin/baptist/policy/">Policy</a>
+
+</div>
+{% endblock %}
+
+
+{% block content %}
+<style type="text/css">
+table {margin-left:40px}
+td {padding:6px 30px 2px 12px;}
+td .select1 {width:200px}
+td .select2 {width:128px}
+.highlight_text {color:#d65;}
+</style>
+
+<script type="text/javascript" src="/static/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery.json-2.3.min.js"></script>
+<script type="text/javascript" src="/static/js/policy_base.js?ada"></script>
+<script type="text/javascript" src="/admin/jsi18n/"></script>
+<script type="text/javascript" src="/static/admin/js/core.js"></script>
+<script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+<script type="text/javascript" src="/static/admin/js/actions.js"></script>
+<script type="text/javascript" src="/static/admin/js/calendar.js"></script>
+<script type="text/javascript" src="/static/js/DateTimeShortcuts.js"></script>
+
+<div class="results">
+<fieldset id="main">
+	<!--<legend><font><strong>Insurance Policy:</strong></font></legend>-->
+	<br>
+	<table id="result_list">
+		<tbody>
+    		<tr class="row1">
+    			<td>Policy Type :</td>
+    			<td>
+    			<select class="select1" id="select_policytype">
+    			<option value ="999">--- Choose policy type ---</option>
+    			{% for policytype in policytypes %} 
+					<option value="{{policytype.type_id}}">{{policytype.type_name}}</option>
+    			{% endfor %}
+    			</select>
+    			</td>
+    		</tr>
+    		<tr class="row2">
+    			<td>Church Name :</td>
+    			<td>
+    			<select class="select1" id="select_church">
+    			<option value ="999">--- Choose church ---</option>
+    			{% for church in churchs %} 
+					<option value ="{{church.chu_pk}}">{{church.chu_name}}</option>
+    			{% endfor %}
+    			</select>
+    			</td>
+    		</tr>
+		</tbody>
+	</table>
+	<table id="result_list">
+		<tbody>
+			<tr>
+				<td><div id="decision"></div></td>
+			</tr>
+		</tbody>
+	</table>
+	<br>
+</fieldset>
+
+<div id="div_bindetail">
+<fieldset id="fieldset_bindetail">
+	<legend><img class="collapsable" src="/static/pic/uparrow.png"/>&nbsp;&nbsp;<font color="#088"><strong>Business Interruption - Details:</strong></font></legend>
+	<div>
+	<br>
+	<table id="result_list">
+		<tbody>
+    		<tr class="row1">
+    			<td>Loss of Income/Rents :</td>
+    			<td><input id="pdb_incomeLossSI" type="text" style="text-align: right"/></td>
+    		</tr>
+    		<tr class="row2">
+    			<td>Payroll:</td>
+    			<td><input id="pdb_payrollSI" type="text" style="text-align: right"/></td>
+    		</tr>
+    		<tr class="row1">
+    			<td>Increased Cost of Working:</td>
+    			<td><input id="pdb_increaseCostSI" type="text" style="text-align: right"/></td>
+    		</tr>
+     		<tr class="row2">
+    			<td>Claim Preparation:</td>
+    			<td><input id="pdb_claimPrepSI" type="text" style="text-align: right"/></td>
+    		</tr>
+     		<tr class="row1">
+    			<td>Indemnity Period:</td>
+    			<td><select class="select2" id="pdb_indemnityPeriod">
+    			<option value ="999">--- Choose ---</option>
+    			{% for rate in rates_binind %} 
+					<option value ="{{rate.rat_pk}}">{{rate.rat_amount | floatformat:0}} Months</option>
+    			{% endfor %}
+    			</select></td>
+    		</tr>
+      		<tr class="row2">
+    			<td>Is Earthquake Excluded?</td>
+    			<td><input id="pdb_isEQExcluded" type="checkbox"/> Yes?</td>
+    		</tr>
+		</tbody>
+	</table>	
+	<br>
+	</div>
+</fieldset>
+</div>
+
+<div id="div_liadetail">
+<fieldset id="fieldset_liadetail">
+	<legend><img class="collapsable" src="/static/pic/uparrow.png"/>&nbsp;&nbsp;<font color="#088"><strong id="lia_title"> Liability - Details:</strong></font></legend>
+	<div><br>
+	<table id="result_list">
+		<thead>
+			<tr>
+				<th scope="col">Clause</th>
+   				<th scope="col" colspan="2">Included</th>
+   				<th scope="col">Retroactive Date</th>
+   				<th scope="col">Limit</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="row1">
+				<td>A - Professional Indemnity</td>
+				<td colspan="2"><input id="claA_override" type="checkbox"/> Yes?</td>
+				<td><input class="vDateField" size="12" type="text" id="claA_date" /></td>
+				<td><input type="text" id="claA_limit"/></td>
+			</tr>
+			<tr id="tr_medicalExtensionIncluded" class="row1">
+				<td></td>
+				<td></td>
+				<td bgcolor="#F5FBEF">|-&nbsp;<input id="checkbox_medicalExtensionIncluded" type="checkbox" /> Yes?</td>
+				<td bgcolor="#F5FBEF" colspan="2">Medical Malpractice Vicarious Liability Extension</td>
+			</tr>
+			<tr id="tr_professionalIndemnityExcluded" class="row1">
+				<td></td>
+				<td></td>
+				<td bgcolor="#F5FBEF">|-&nbsp;<input id="checkbox_professionalIndemnityExcluded" type="checkbox" /> Yes?</td>
+				<td bgcolor="#F5FBEF" colspan="2">Professional Indemnity Exclusion</td>
+			</tr>
+			<tr class="row2">
+				<td>B - Statutory</td>
+				<td colspan="2"><input id="claB_override" type="checkbox"/> Yes?</td>
+				<td><input class="vDateField" size="12" type="text" id="claB_date" /></td>
+				<td><input type="text" id="claB_limit"/></td>
+			</tr>
+			<tr class="row1">
+				<td>C - Employers</td>
+				<td colspan="2"><input id="claC_override" type="checkbox"/> Yes?</td>
+				<td><input class="vDateField" size="12" type="text" id="claC_date" /></td>
+				<td><input type="text" id="claC_limit"/></td>
+			</tr>
+			<tr class="row2">
+				<td>D - Sexual Abuse</td>
+				<td colspan="2"><input id="claD_override" type="checkbox"/> Yes?</td>
+				<td><input class="vDateField" size="12" type="text" id="claD_date"/></td>
+				<td><input type="text" id="claD_limit"/></td>
+			</tr>
+			<tr class="row1">
+				<td>E - General</td>
+				<td colspan="2"><input id="claE_override" type="checkbox"/> Yes?</td>
+				<td><input class="vDateField" size="12" type="text" id="claE_date" /></td>
+				<td><input type="text" id="claE_limit"/></td>
+			</tr>
+			<tr class="row2">
+				<td>F - Criminal Defense</td>
+				<td colspan="2"><input id="claF_override" type="checkbox"/> Yes?</td>
+				<td><input class="vDateField" size="12" type="text" id="claF_date" /></td>
+				<td><input type="text" id="claF_limit"/></td>
+			</tr>
+			<tr class="row1">
+				<td>G - Internet Liability</td>
+				<td colspan="2"><input id="claG_override" type="checkbox"/> Yes?</td>
+				<td><input class="vDateField" size="12" type="text" id="claG_date" /></td>
+				<td><input type="text" id="claG_limit"/></td>
+			</tr>
+		</tbody>
+	</table>
+	<br></div>
+</fieldset>
+</div>
+
+<div id="div_specialcondition">
+<fieldset id="fieldset_specialcondition">
+	<legend><img class="collapsable" src="/static/pic/uparrow.png"/>&nbsp;&nbsp;<font color="#088"><strong>Special Conditions:</strong></font></legend>
+	<div>
+	<table id="result_list">
+		<tbody>
+			<tr>
+				<td><textarea id="textarea_specialcondition" rows="7" cols="58"></textarea></td>
+			</tr>
+		</tbody>
+	</table>	
+	<br>
+	</div>
+</fieldset>
+</div>
+
+
+
+<div id="div_binrateoverride">
+<fieldset id="fieldset_binrateoverride">
+	<legend><img class="collapsable" src="/static/pic/uparrow.png"/>&nbsp;&nbsp;<font color="#088"><strong>Business Interruption - Rate Override:</strong></font></legend>
+	<div><br>
+	<table id="result_list">
+		<tbody>
+			<tr class="row1">
+				<td>Override Rates?</td>
+				<td><input id="pol_isRateOverride" type="checkbox"/> Yes?</td>
+			</tr>
+			<tr class="row2">
+				<td>Company Premium Rate:</td>
+				<td><input id="bin_override_cpr" type="text"/></td>
+			</tr>
+			<tr class="row2">
+				<td>Earthquake Rate:</td>
+				<td><input id="bin_override_eqr" type="text"/></td>
+			</tr>
+		</tbody>
+	</table>	
+	<br>
+	</div>
+</fieldset>
+</div>
+
+<div id="div_totalpremium">
+<fieldset id="fieldset_totalpremium">
+	<legend><img class="collapsable" src="/static/pic/uparrow.png"/>&nbsp;&nbsp;<font color="#E0692A"><strong>Total Annual Premiums:</strong></font></legend>
+	<div><br>
+	<table id="result_list">
+		<tbody>
+			<tr class="row1">
+				<td>Company Premium:</td>
+				<td><input id="pol_COPAmt" type="text" style="text-align:right" readonly="readonly"/></td>
+			</tr>
+			<tr class="row2">
+				<td>Company EQ Premium:</td>
+				<td><input id="pol_CEQAmt" type="text" style="text-align:right" readonly="readonly"/></td>
+			</tr>
+			<tr class="row1">
+				<td>EQC Premium:</td>
+				<td><input id="pol_EQCAmt" type="text" style="text-align:right" readonly="readonly"/></td>
+			</tr>
+			<tr class="row2">
+				<td>FSL Premium:</td>
+				<td><input id="pol_FSLAmt" type="text" style="text-align:right" readonly="readonly"/></td>
+			</tr>
+			<tr class="row1">
+				<td>Fee:</td>
+				<td><input id="pol_FEEAmt" type="text" style="text-align:right" readonly="readonly"/></td>
+			</tr>
+			<tr class="row2">
+				<td>Net Premium:</td>
+				<td><input id="pol_NETAmt" type="text" style="text-align:right" readonly="readonly"/></td>
+			</tr>
+			<tr class="row1">
+				<td>GST:</td>
+				<td><input id="pol_GSTAmt" type="text" style="text-align:right" readonly="readonly"/></td>
+			</tr>
+			<tr class="row2">
+				<td>Gross Premium:</td>
+				<td><input id="pol_GRSAmt" type="text" style="text-align:right" readonly="readonly"/></td>
+			</tr>
+		</tbody>
+	</table>	
+	<br></div>
+</fieldset>
+</div>
+
+</div>
+<br>
+<div style="width:100%">
+<div style="float:right;">
+	<input type="button" value="Save" id="save"/>&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" value="Cancel" id="cancel"/>&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" value="Schedule" id="recalculate"/>
+</div></div>
+{% endblock %}
